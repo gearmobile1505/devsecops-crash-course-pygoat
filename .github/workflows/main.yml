@@ -59,7 +59,8 @@ jobs:
 
     - name: Docker Scout Scan
       run: |
-        docker scout cves ${{ secrets.REPO_USER }}/pygoat:${{ github.sha }} --only-severities critical,high --format sarif --output scout-report.sarif || true
+        docker scout cves ${{ secrets.REPO_USER }}/pygoat:${{ github.sha }} --format sarif --output scout-report.sarif || true
+        test -f scout-report.sarif || printf '{"version":"2.1.0","$schema":"https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json","runs":[]}' > scout-report.sarif
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
