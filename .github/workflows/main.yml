@@ -53,9 +53,6 @@ jobs:
         docker push ${{ secrets.REPO_USER }}/pygoat:latest
         docker push ${{ secrets.REPO_USER }}/pygoat:${{ github.sha }}
 
-    - name: Save Docker Image to tar
-      run: docker save -o pygoat.tar ${{ secrets.REPO_USER }}/pygoat:${{ github.sha }}
-
     - name: Docker Scout Scan
       uses: docker/scout-action@v1.0.9
       with:
@@ -63,7 +60,7 @@ jobs:
         dockerhub-password: ${{ secrets.REPO_PWD }}
         command: quickview,cves
         only-severities: critical,high
-        image: pygoat.tar
+        image: ${{ secrets.REPO_USER }}/pygoat:${{ github.sha }}
         sarif-file: scout-report.sarif
 
     - name: Upload Artifact
